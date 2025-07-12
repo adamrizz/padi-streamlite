@@ -9,8 +9,8 @@ import io
 st.set_page_config(page_title="Deteksi Daun Padi", layout="centered")
 st.title("🌾 Deteksi Penyakit Daun Padi")
 
-MODEL_URL = "https://github.com/adamrizz/padi-cnn/releases/download/v1.0/daun_padi_cnn_model.keras"
-MODEL_PATH = "daun_padi_cnn_model.keras"
+MODEL_URL = "https://github.com/adamrizz/padi-streamlite/releases/download/v1.0/daun_padi_cnn_model.h5"
+MODEL_PATH = "daun_padi_cnn_model.h5"
 
 # Cek & unduh model
 @st.cache_resource
@@ -45,9 +45,11 @@ if uploaded_file:
     predicted_label = CLASS_NAMES[predicted_index]
     confidence = float(np.max(score))
 
-    st.markdown(f"### ✅ Hasil Prediksi: `{predicted_label}`")
-    st.markdown(f"**Confidence:** {confidence:.2%}")
-    
+
+    st.metric(label="Prediksi", value=predicted_label)
+    st.metric(label="Confidence", value=f"{confidence:.2%}")
+
+
     st.markdown("#### 📊 Semua Probabilitas:")
     for i, cls in enumerate(CLASS_NAMES):
         st.progress(score[i], text=f"{cls}: {score[i]:.2%}")
